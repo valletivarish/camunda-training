@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0novo3j" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <bpmn:process id="depositProcess" name="Deposit Process" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_13uhi8r</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0dlo2nx" messageRef="Message_2ra2ad7" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_13uhi8r" sourceRef="StartEvent_1" targetRef="Activity_0q3j7bu" />
+    <bpmn:userTask id="Activity_0q3j7bu" name="Enter Amount To Deposit and Provide Cash to machine">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="depositAmount" label="Enter Amount To Deposit" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_13uhi8r</bpmn:incoming>
+      <bpmn:incoming>Flow_0d17hvi</bpmn:incoming>
+      <bpmn:outgoing>Flow_180ci6b</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_180ci6b" sourceRef="Activity_0q3j7bu" targetRef="Activity_15fcnkw" />
+    <bpmn:serviceTask id="Activity_15fcnkw" name="Cash Verification" camunda:expression="${true}" camunda:resultVariable="verifiedCash">
+      <bpmn:incoming>Flow_180ci6b</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wuyr15</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_0pto1fo" name="Cash Verified?">
+      <bpmn:incoming>Flow_0wuyr15</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ga2b8w</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0qd3ycy</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0wuyr15" sourceRef="Activity_15fcnkw" targetRef="Gateway_0pto1fo" />
+    <bpmn:sequenceFlow id="Flow_0ga2b8w" name="Yes" sourceRef="Gateway_0pto1fo" targetRef="Activity_0v8w2hb">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${verifiedCash==true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Activity_0v8w2hb" name="Update ATM Amount" camunda:class="com.techlabs.camunda.delegates.UpdateDepositAmount">
+      <bpmn:incoming>Flow_0ga2b8w</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j27tv8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:task id="Activity_1b9x4pm" name="Return Cash">
+      <bpmn:incoming>Flow_0qd3ycy</bpmn:incoming>
+      <bpmn:outgoing>Flow_0d17hvi</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0qd3ycy" sourceRef="Gateway_0pto1fo" targetRef="Activity_1b9x4pm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${verifiedCash==false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0d17hvi" sourceRef="Activity_1b9x4pm" targetRef="Activity_0q3j7bu" />
+    <bpmn:sequenceFlow id="Flow_1j27tv8" sourceRef="Activity_0v8w2hb" targetRef="Activity_126eaqw" />
+    <bpmn:userTask id="Activity_126eaqw" name="Want Receipt?">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="wantReceipt" label="Want Receipt" type="boolean" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1j27tv8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tmtotw</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_13t2a2a">
+      <bpmn:incoming>Flow_0tmtotw</bpmn:incoming>
+      <bpmn:outgoing>Flow_00hmz68</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0y5hlnh</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0tmtotw" sourceRef="Activity_126eaqw" targetRef="Gateway_13t2a2a" />
+    <bpmn:sequenceFlow id="Flow_00hmz68" name="Yes" sourceRef="Gateway_13t2a2a" targetRef="Activity_0zjzbut">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${wantReceipt==true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:scriptTask id="Activity_0zjzbut" name="Generate" scriptFormat="javascript">
+      <bpmn:incoming>Flow_00hmz68</bpmn:incoming>
+      <bpmn:outgoing>Flow_0j4obv2</bpmn:outgoing>
+      <bpmn:script>print('Deposited Amount: ' + depositAmount + '\nUpdated Amount: '+ updatedBalance)</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0y5hlnh" name="No" sourceRef="Gateway_13t2a2a" targetRef="Event_0vhe8bp">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${wantReceipt==false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0j4obv2" sourceRef="Activity_0zjzbut" targetRef="Event_1vvwtnj" />
+    <bpmn:endEvent id="Event_1vvwtnj">
+      <bpmn:incoming>Flow_0j4obv2</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1ry6hmx" camunda:class="com.techlabs.camunda.delegates.SubprocessEnd" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_0vhe8bp">
+      <bpmn:incoming>Flow_0y5hlnh</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1ez7vw4" camunda:class="com.techlabs.camunda.delegates.SubprocessEnd" />
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:message id="Message_25as0k3" />
+  <bpmn:message id="Message_2ra2ad7" name="DepositSelected" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="depositProcess">
+      <bpmndi:BPMNShape id="Event_1chb3ov_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="109" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xykaav_di" bpmnElement="Activity_0q3j7bu">
+        <dc:Bounds x="250" y="87" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1mnun10_di" bpmnElement="Activity_15fcnkw">
+        <dc:Bounds x="430" y="87" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0pto1fo_di" bpmnElement="Gateway_0pto1fo" isMarkerVisible="true">
+        <dc:Bounds x="725" y="102" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="714" y="78" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0uvj4j5_di" bpmnElement="Activity_0v8w2hb">
+        <dc:Bounds x="840" y="87" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1b9x4pm_di" bpmnElement="Activity_1b9x4pm">
+        <dc:Bounds x="560" y="230" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_07e7p6b_di" bpmnElement="Activity_126eaqw">
+        <dc:Bounds x="1010" y="87" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_13t2a2a_di" bpmnElement="Gateway_13t2a2a" isMarkerVisible="true">
+        <dc:Bounds x="1185" y="102" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1b5df42_di" bpmnElement="Activity_0zjzbut">
+        <dc:Bounds x="1310" y="87" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0hc5nl8_di" bpmnElement="Event_1vvwtnj">
+        <dc:Bounds x="1492" y="109" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0l0a8rg_di" bpmnElement="Event_0vhe8bp">
+        <dc:Bounds x="1192" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_13uhi8r_di" bpmnElement="Flow_13uhi8r">
+        <di:waypoint x="188" y="127" />
+        <di:waypoint x="250" y="127" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_180ci6b_di" bpmnElement="Flow_180ci6b">
+        <di:waypoint x="350" y="127" />
+        <di:waypoint x="430" y="127" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wuyr15_di" bpmnElement="Flow_0wuyr15">
+        <di:waypoint x="530" y="127" />
+        <di:waypoint x="725" y="127" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ga2b8w_di" bpmnElement="Flow_0ga2b8w">
+        <di:waypoint x="775" y="127" />
+        <di:waypoint x="840" y="127" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="799" y="109" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qd3ycy_di" bpmnElement="Flow_0qd3ycy">
+        <di:waypoint x="750" y="152" />
+        <di:waypoint x="750" y="270" />
+        <di:waypoint x="660" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0d17hvi_di" bpmnElement="Flow_0d17hvi">
+        <di:waypoint x="560" y="270" />
+        <di:waypoint x="300" y="270" />
+        <di:waypoint x="300" y="167" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j27tv8_di" bpmnElement="Flow_1j27tv8">
+        <di:waypoint x="940" y="127" />
+        <di:waypoint x="1010" y="127" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tmtotw_di" bpmnElement="Flow_0tmtotw">
+        <di:waypoint x="1110" y="127" />
+        <di:waypoint x="1185" y="127" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00hmz68_di" bpmnElement="Flow_00hmz68">
+        <di:waypoint x="1235" y="127" />
+        <di:waypoint x="1310" y="127" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1264" y="109" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y5hlnh_di" bpmnElement="Flow_0y5hlnh">
+        <di:waypoint x="1210" y="152" />
+        <di:waypoint x="1210" y="222" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1218" y="184" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0j4obv2_di" bpmnElement="Flow_0j4obv2">
+        <di:waypoint x="1410" y="127" />
+        <di:waypoint x="1492" y="127" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

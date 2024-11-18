@@ -1,0 +1,26 @@
+package com.monocept.myapp;
+
+import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        // Load .env file
+        Dotenv dotenv = Dotenv.configure()
+                              .directory("./") // Path to the .env file
+                              .ignoreIfMalformed()
+                              .ignoreIfMissing()
+                              .load();
+
+        // Set variables as System properties (optional)
+        dotenv.entries().forEach(entry -> 
+            System.setProperty(entry.getKey(), entry.getValue())
+        );
+
+        // Start Spring Boot application
+        SpringApplication.run(Application.class, args);
+    }
+}

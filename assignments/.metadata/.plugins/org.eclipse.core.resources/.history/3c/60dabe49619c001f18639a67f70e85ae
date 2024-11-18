@@ -1,0 +1,46 @@
+package com.monocept.camunda;
+
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.runtimeService;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.taskService;
+
+import java.util.HashMap;
+import java.util.Map;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.engine.test.Deployment;
+import org.camunda.bpm.extension.process_test_coverage.junit5.ProcessEngineCoverageExtension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+@ExtendWith(ProcessEngineCoverageExtension.class)
+class AtmTest {
+
+    @Deployment(resources = "Atm Transaction.bpmn")
+    @Test
+    void test() {
+        Map<String, Object> variables = new HashMap<>();
+        ProcessInstance processInstance = runtimeService().createProcessInstanceByKey("Process_0jyyi1u").execute();
+        
+        // Retrieve the first active task
+        Task task = taskService().createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+        System.out.println("Task Name: " + task.getName());
+
+        // Complete the first task
+        taskService().complete(task.getId());
+
+        // Retrieve the next task after completing the first one
+        Task nextTask = taskService().createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+        System.out.println("Next Task Name: " + nextTask.getName());
+
+        // Set variables for the next task
+        taskService().setVariable(nextTask.getId(), "accountNumber", "1234 5678 9012 3456");
+        taskService().setVariable(nextTask.getId(), "pin", "1234");
+
+        // Complete the next task
+        taskService().complete(nextTask.getId());
+
+        // Assert that the process has ended
+        assertThat(processInstance).isEnded();
+    }
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0478ha4" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <bpmn:process id="balanceProcess" name="Balance Process" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0v7hq8z</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0newcbz" messageRef="Message_03brg1t" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0v7hq8z" sourceRef="StartEvent_1" targetRef="Activity_05ew4pc" />
+    <bpmn:scriptTask id="Activity_1klx3tt" name="Show Balance" scriptFormat="javascript">
+      <bpmn:incoming>Flow_1f14om9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10qh7tx</bpmn:outgoing>
+      <bpmn:script>print('Current Balance: '+ originalAmount)</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_1f14om9" sourceRef="Activity_05ew4pc" targetRef="Activity_1klx3tt" />
+    <bpmn:serviceTask id="Activity_05ew4pc" name="Calculate Balance" camunda:class="com.techlabs.camunda.delegates.CalculateBalance">
+      <bpmn:incoming>Flow_0v7hq8z</bpmn:incoming>
+      <bpmn:outgoing>Flow_1f14om9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_10qh7tx" sourceRef="Activity_1klx3tt" targetRef="Event_0t7d4fe" />
+    <bpmn:endEvent id="Event_0t7d4fe">
+      <bpmn:incoming>Flow_10qh7tx</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_15k6j38" camunda:class="com.techlabs.camunda.delegates.SubprocessEnd" />
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:message id="Message_03brg1t" name="CheckBalanceSelected" />
+  <bpmn:message id="Message_0vqk0oq" name="SubprocessEnd" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="balanceProcess">
+      <bpmndi:BPMNShape id="Activity_0973j24_di" bpmnElement="Activity_1klx3tt">
+        <dc:Bounds x="440" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0g2mfhr_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nig1v3_di" bpmnElement="Activity_05ew4pc">
+        <dc:Bounds x="260" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1irjlln_di" bpmnElement="Event_0t7d4fe">
+        <dc:Bounds x="622" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1f14om9_di" bpmnElement="Flow_1f14om9">
+        <di:waypoint x="360" y="117" />
+        <di:waypoint x="440" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0v7hq8z_di" bpmnElement="Flow_0v7hq8z">
+        <di:waypoint x="188" y="117" />
+        <di:waypoint x="260" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10qh7tx_di" bpmnElement="Flow_10qh7tx">
+        <di:waypoint x="540" y="117" />
+        <di:waypoint x="622" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

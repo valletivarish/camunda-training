@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 40px;
+            width: 400px;
+            border: 1px solid #ddd;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #aaa;
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                width: 90%;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <form role="form" name="form">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input required
+                   id="username"
+                   cam-variable-name="username"
+                   cam-variable-type="String"
+                   class="form-control"
+                   placeholder="Enter your username" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password"
+                   cam-variable-name="password"
+                   cam-variable-type="String"
+                   class="form-control"
+                   type="password"
+                   placeholder="Enter your password" />
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

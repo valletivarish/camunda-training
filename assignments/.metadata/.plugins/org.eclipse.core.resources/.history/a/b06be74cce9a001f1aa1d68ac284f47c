@@ -1,0 +1,18 @@
+package com.monocept.camunda.delegate;
+
+import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.delegate.JavaDelegate;
+
+public class UpdateBalanceDelegate implements JavaDelegate {
+
+	private final double availableBalance=2000;
+	
+	
+	@Override
+	public void execute(DelegateExecution execution) throws Exception {
+		double updatedBalance=availableBalance + (double) execution.getVariable("amount");	
+		execution.setVariable("updatedBalance", updatedBalance);
+
+	}
+
+}

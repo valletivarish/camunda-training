@@ -1,0 +1,67 @@
+package com.monocept.camunda.delegate;
+public class CardDetails {
+    private String cardNumber;
+    private String pin;
+    private String holderName;
+    private String expiryDate;
+    private String cardType;
+
+    public CardDetails(String cardNumber, String pin, String holderName, String expiryDate, String cardType) {
+        this.cardNumber = cardNumber;
+        this.pin = pin;
+        this.holderName = holderName;
+        this.expiryDate = expiryDate;
+        this.cardType = cardType;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+
+    public String getHolderName() {
+        return holderName;
+    }
+
+    public void setHolderName(String holderName) {
+        this.holderName = holderName;
+    }
+
+    public String getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
+    }
+
+    @Override
+    public String toString() {
+        return "CardDetails{" +
+                "cardNumber='" + cardNumber + '\'' +
+                ", pin='" + pin + '\'' +
+                ", holderName='" + holderName + '\'' +
+                ", expiryDate='" + expiryDate + '\'' +
+                ", cardType='" + cardType + '\'' +
+                '}';
+    }
+}

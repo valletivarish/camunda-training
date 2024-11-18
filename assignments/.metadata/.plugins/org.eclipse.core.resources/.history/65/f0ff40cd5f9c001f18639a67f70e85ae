@@ -1,0 +1,43 @@
+package com.monocept.camunda;
+
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.runtimeService;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.taskService;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.task.Task;
+import org.junit.jupiter.api.Test;
+
+class AtmTest {
+
+	@Test
+	void test() {
+		Map<String, Object> variables = new HashMap<>();
+        //ProcessInstance processInstance = runtimeService().startProcessInstanceByKey("login", variables);
+        ProcessInstance processInstance=runtimeService().createProcessInstanceByKey("Process_0jyyi1u").execute();
+        List<Task> tasks = taskService().createTaskQuery().processInstanceId(processInstance.getId()).list();
+        
+        tasks.forEach((task) -> System.out.println("Task Name: " + task.getName()));
+        
+//        taskService().setVariable(tasks.get(0).getId(), "username", "Varish");
+//        taskService().setVariable(tasks.get(0).getId(), "password", "1234");
+//
+//        String username = (String) taskService().getVariable(tasks.get(0).getId(), "username");
+//        String password = (String) taskService().getVariable(tasks.get(0).getId(), "password");
+//
+//        if ("Varish".equals(username) && "1234".equals(password)) {
+//            variables.put("valid", true);
+//        } else {
+//            variables.put("valid", false);
+//        }
+//
+//        taskService().complete(tasks.get(0).getId(), variables);
+        assertThat(processInstance).isEnded();
+	}
+
+}

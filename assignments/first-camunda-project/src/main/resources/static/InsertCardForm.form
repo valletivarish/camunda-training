@@ -1,0 +1,33 @@
+{
+  "components": [
+    {
+      "label": "Account Number",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_10ksrbm",
+        "columns": null
+      },
+      "id": "Field_08p42qc",
+      "key": "accountNumber"
+    },
+    {
+      "label": "Pin",
+      "type": "number",
+      "layout": {
+        "row": "Row_0pp65le",
+        "columns": null
+      },
+      "id": "Field_1812f7c",
+      "key": "pin"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0u4e1wr",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.28.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 16
+}

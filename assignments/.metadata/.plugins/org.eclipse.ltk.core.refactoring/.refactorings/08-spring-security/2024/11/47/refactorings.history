@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;Dockerfile&apos; to &apos;08-spring-security&apos;&#x0D;&#x0A;- Original project: &apos;08-spring-security&apos;&#x0D;&#x0A;- Destination element: &apos;08-spring-security&apos;&#x0D;&#x0A;- Original element: &apos;Dockerfile&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move file" destination="=08-spring-security" element1="target/Dockerfile" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1731936364748" units="0" version="1.0"/>
+</session>

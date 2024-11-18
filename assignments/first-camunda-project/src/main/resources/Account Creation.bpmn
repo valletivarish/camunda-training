@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0uvaa20" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <bpmn:process id="accountCreation" name="Account Creation" isExecutable="true" camunda:historyTimeToLive="7">
+    <bpmn:startEvent id="StartEvent_1" name="start">
+      <bpmn:outgoing>Flow_0wzzd4a</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0wzzd4a" sourceRef="StartEvent_1" targetRef="Activity_1e6fom4" />
+    <bpmn:userTask id="Activity_1e6fom4" name="Enter Details" camunda:formRef="accountCreation" camunda:formRefBinding="latest">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_0wzzd4a</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ixxuos</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0ixxuos" sourceRef="Activity_1e6fom4" targetRef="Activity_04v7s8e" />
+    <bpmn:userTask id="Activity_04v7s8e" name="Type of Account" camunda:formRef="Form_1ipmnr6" camunda:formRefBinding="latest">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_0ixxuos</bpmn:incoming>
+      <bpmn:outgoing>Flow_1cb7f3y</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1cb7f3y" sourceRef="Activity_04v7s8e" targetRef="Activity_0tmkken" />
+    <bpmn:serviceTask id="Activity_0tmkken" name="Account Number Genration" camunda:class="com.monocept.camunda.delegate.AccountNumberGeneration">
+      <bpmn:incoming>Flow_1cb7f3y</bpmn:incoming>
+      <bpmn:outgoing>Flow_04rl887</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_04rl887" sourceRef="Activity_0tmkken" targetRef="Activity_0o3a3ls" />
+    <bpmn:userTask id="Activity_0o3a3ls" name="Deposit Amount">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="depositAmount" label="Enter the Deposit Amount" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_04rl887</bpmn:incoming>
+      <bpmn:outgoing>Flow_000q99b</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_000q99b" sourceRef="Activity_0o3a3ls" targetRef="Activity_13krbji" />
+    <bpmn:scriptTask id="Activity_13krbji" name="Print Details" scriptFormat="js">
+      <bpmn:incoming>Flow_000q99b</bpmn:incoming>
+      <bpmn:outgoing>Flow_06mxuso</bpmn:outgoing>
+      <bpmn:script>print("Account Holder Details : ");
+print("Account Number : ",accountNumber);
+print("First Name : ",firstName);
+print("Last Name : ",lastName);
+print("Email Id : ",email);
+print("Phone Number : ",phoneNumber);
+print("Account Type : ",type);
+print("Balance : ",depositAmount);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:endEvent id="Event_0zm7jb1" name="end">
+      <bpmn:incoming>Flow_06mxuso</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_06mxuso" sourceRef="Activity_13krbji" targetRef="Event_0zm7jb1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="accountCreation">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="186" y="142" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1rcfysq_di" bpmnElement="Activity_1e6fom4">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0wrigyh_di" bpmnElement="Activity_04v7s8e">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0db0iaz_di" bpmnElement="Activity_0tmkken">
+        <dc:Bounds x="590" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yzpne4_di" bpmnElement="Activity_0o3a3ls">
+        <dc:Bounds x="750" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_089d505_di" bpmnElement="Activity_13krbji">
+        <dc:Bounds x="910" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0zm7jb1_di" bpmnElement="Event_0zm7jb1">
+        <dc:Bounds x="1072" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1081" y="142" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0wzzd4a_di" bpmnElement="Flow_0wzzd4a">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ixxuos_di" bpmnElement="Flow_0ixxuos">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1cb7f3y_di" bpmnElement="Flow_1cb7f3y">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="590" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04rl887_di" bpmnElement="Flow_04rl887">
+        <di:waypoint x="690" y="117" />
+        <di:waypoint x="750" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_000q99b_di" bpmnElement="Flow_000q99b">
+        <di:waypoint x="850" y="117" />
+        <di:waypoint x="910" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06mxuso_di" bpmnElement="Flow_06mxuso">
+        <di:waypoint x="1010" y="117" />
+        <di:waypoint x="1072" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

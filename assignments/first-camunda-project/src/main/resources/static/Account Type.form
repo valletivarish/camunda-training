@@ -1,0 +1,33 @@
+{
+  "components": [
+    {
+      "values": [
+        {
+          "label": "savings",
+          "value": "Savings"
+        },
+        {
+          "label": "current",
+          "value": "Current"
+        }
+      ],
+      "label": "Account Type",
+      "type": "select",
+      "layout": {
+        "row": "Row_0np3xou",
+        "columns": null
+      },
+      "id": "Field_0sxxbkn",
+      "key": "type"
+    }
+  ],
+  "type": "default",
+  "id": "Form_1ipmnr6",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.28.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 16
+}

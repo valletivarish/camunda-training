@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1hvdrcf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <bpmn:collaboration id="Collaboration_0ziggi6">
+    <bpmn:participant id="Participant_0fjpfc2" name="Withdraw Transaction" processRef="withdrawTransaction" />
+  </bpmn:collaboration>
+  <bpmn:process id="withdrawTransaction" name="Withdraw Transaction" isExecutable="true" camunda:historyTimeToLive="7">
+    <bpmn:startEvent id="Event_1kk7ogs" name="Initiate Withdrawal">
+      <bpmn:outgoing>Flow_063937s</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_0m26x32" name="Enter amount">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="amount" label="Enter Amount to withdraw" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_063937s</bpmn:incoming>
+      <bpmn:incoming>Flow_0nd0qef</bpmn:incoming>
+      <bpmn:outgoing>Flow_1icvjox</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_1n5396a" name="Check Account Balance" camunda:class="com.monocept.camunda.delegate.CheckAccountBalanceDelegate">
+      <bpmn:incoming>Flow_1icvjox</bpmn:incoming>
+      <bpmn:outgoing>Flow_16kofru</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_08gyfzf" name="is Balance Sufficient?">
+      <bpmn:incoming>Flow_16kofru</bpmn:incoming>
+      <bpmn:outgoing>Flow_0njj3ls</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1n10iye</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:scriptTask id="Activity_12xg95d" name="Hand out cash" scriptFormat="js">
+      <bpmn:incoming>Flow_0njj3ls</bpmn:incoming>
+      <bpmn:outgoing>Flow_0p7af3c</bpmn:outgoing>
+      <bpmn:script>print(amount+" Amount has been withdrawn succesfully");</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="Activity_0daycbt" name="Display Insufficient balance" scriptFormat="js">
+      <bpmn:incoming>Flow_1n10iye</bpmn:incoming>
+      <bpmn:outgoing>Flow_0nd0qef</bpmn:outgoing>
+      <bpmn:script>print("Insufficient Balance")</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:serviceTask id="Activity_1riglp2" name="Update balance" camunda:class="com.monocept.camunda.delegate.UpdateBalanceDelegate">
+      <bpmn:incoming>Flow_0p7af3c</bpmn:incoming>
+      <bpmn:outgoing>Flow_13thas2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_1g8rtj6" name="Need Receipt">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="receipt" label="Do you want to print receipt?" type="boolean" defaultValue="false" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_13thas2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nr033q</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0cffr50">
+      <bpmn:incoming>Flow_1nr033q</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mzzkx1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0vdvebi</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1x9gwfq" name="Withdrawal Completed">
+      <bpmn:incoming>Flow_0vdvebi</bpmn:incoming>
+      <bpmn:incoming>Flow_0pntmt7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="Activity_1garl4i" name="Print receipt" scriptFormat="js">
+      <bpmn:incoming>Flow_0mzzkx1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0pntmt7</bpmn:outgoing>
+      <bpmn:script>const date = new Date();
+const receiptNo = Math.floor(1000 + Math.random() * 9000);
+const hours = date.getHours();
+const minutes = date.getMinutes().toString().padStart(2, '0');
+const ampm = hours &gt;= 12 ? 'PM' : 'AM';
+const formattedHours = hours % 12 || 12;
+const lastDigits = accountNumber.slice(-4);
+print("Receipt : ");
+print("Receipt No:", receiptNo);
+print("Account Number: **** **** **** " + lastDigits);
+print("Date:", date.toLocaleDateString());
+print("Time:", `${formattedHours}:${minutes} ${ampm}`);
+print("Amount Withdrawn:", amount);
+print("Updated Balance:", updatedBalance);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_063937s" sourceRef="Event_1kk7ogs" targetRef="Activity_0m26x32" />
+    <bpmn:sequenceFlow id="Flow_0nd0qef" name="Re Check the amount" sourceRef="Activity_0daycbt" targetRef="Activity_0m26x32" />
+    <bpmn:sequenceFlow id="Flow_1icvjox" sourceRef="Activity_0m26x32" targetRef="Activity_1n5396a" />
+    <bpmn:sequenceFlow id="Flow_16kofru" sourceRef="Activity_1n5396a" targetRef="Gateway_08gyfzf" />
+    <bpmn:sequenceFlow id="Flow_0njj3ls" name="Yes" sourceRef="Gateway_08gyfzf" targetRef="Activity_12xg95d">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${sufficientBalance==true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1n10iye" name="No" sourceRef="Gateway_08gyfzf" targetRef="Activity_0daycbt">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${sufficientBalance==false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0p7af3c" sourceRef="Activity_12xg95d" targetRef="Activity_1riglp2" />
+    <bpmn:sequenceFlow id="Flow_13thas2" sourceRef="Activity_1riglp2" targetRef="Activity_1g8rtj6" />
+    <bpmn:sequenceFlow id="Flow_1nr033q" sourceRef="Activity_1g8rtj6" targetRef="Gateway_0cffr50" />
+    <bpmn:sequenceFlow id="Flow_0mzzkx1" name="Yes" sourceRef="Gateway_0cffr50" targetRef="Activity_1garl4i">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${receipt==true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0vdvebi" name="No" sourceRef="Gateway_0cffr50" targetRef="Event_1x9gwfq">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${receipt==false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0pntmt7" sourceRef="Activity_1garl4i" targetRef="Event_1x9gwfq" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0ziggi6">
+      <bpmndi:BPMNShape id="Participant_0fjpfc2_di" bpmnElement="Participant_0fjpfc2" isHorizontal="true" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
+        <dc:Bounds x="160" y="50" width="1480" height="430" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1u5gtxd" bpmnElement="Event_1kk7ogs">
+        <dc:Bounds x="212" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="203" y="245" width="54" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1pq62qz" bpmnElement="Activity_0m26x32">
+        <dc:Bounds x="330" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_100xmtw" bpmnElement="Activity_1n5396a">
+        <dc:Bounds x="515" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_012dta7" bpmnElement="Gateway_08gyfzf" isMarkerVisible="true">
+        <dc:Bounds x="705" y="195" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="765" y="206" width="52" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0h355sr" bpmnElement="Activity_12xg95d">
+        <dc:Bounds x="870" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1q14q5f" bpmnElement="Activity_0daycbt">
+        <dc:Bounds x="870" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_14bfvr5" bpmnElement="Activity_1riglp2">
+        <dc:Bounds x="1030" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_09gna2t" bpmnElement="Activity_1g8rtj6">
+        <dc:Bounds x="1190" y="100" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_03oqeff" bpmnElement="Gateway_0cffr50" isMarkerVisible="true">
+        <dc:Bounds x="1325" y="115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0urkr9w" bpmnElement="Event_1x9gwfq">
+        <dc:Bounds x="1582" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1573" y="85" width="54" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_034ukmz" bpmnElement="Activity_1garl4i">
+        <dc:Bounds x="1430" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_063937s_di" bpmnElement="Flow_063937s">
+        <di:waypoint x="248" y="220" />
+        <di:waypoint x="330" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nd0qef_di" bpmnElement="Flow_0nd0qef">
+        <di:waypoint x="920" y="340" />
+        <di:waypoint x="920" y="420" />
+        <di:waypoint x="370" y="420" />
+        <di:waypoint x="370" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="612" y="386" width="67" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1icvjox_di" bpmnElement="Flow_1icvjox">
+        <di:waypoint x="430" y="220" />
+        <di:waypoint x="515" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16kofru_di" bpmnElement="Flow_16kofru">
+        <di:waypoint x="615" y="220" />
+        <di:waypoint x="705" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0njj3ls_di" bpmnElement="Flow_0njj3ls">
+        <di:waypoint x="730" y="195" />
+        <di:waypoint x="730" y="140" />
+        <di:waypoint x="870" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="736" y="165" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1n10iye_di" bpmnElement="Flow_1n10iye">
+        <di:waypoint x="730" y="245" />
+        <di:waypoint x="730" y="300" />
+        <di:waypoint x="870" y="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="738" y="270" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0p7af3c_di" bpmnElement="Flow_0p7af3c">
+        <di:waypoint x="970" y="140" />
+        <di:waypoint x="1030" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13thas2_di" bpmnElement="Flow_13thas2">
+        <di:waypoint x="1130" y="140" />
+        <di:waypoint x="1190" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nr033q_di" bpmnElement="Flow_1nr033q">
+        <di:waypoint x="1290" y="140" />
+        <di:waypoint x="1325" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mzzkx1_di" bpmnElement="Flow_0mzzkx1">
+        <di:waypoint x="1375" y="140" />
+        <di:waypoint x="1430" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1384" y="122" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vdvebi_di" bpmnElement="Flow_0vdvebi">
+        <di:waypoint x="1350" y="165" />
+        <di:waypoint x="1350" y="240" />
+        <di:waypoint x="1600" y="240" />
+        <di:waypoint x="1600" y="158" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1468" y="222" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pntmt7_di" bpmnElement="Flow_0pntmt7">
+        <di:waypoint x="1530" y="140" />
+        <di:waypoint x="1582" y="140" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

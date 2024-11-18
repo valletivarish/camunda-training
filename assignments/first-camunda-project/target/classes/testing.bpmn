@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0nu8nvg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <bpmn:process id="Process_0rgw1nb" isExecutable="true" camunda:historyTimeToLive="7">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1596p0w</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1596p0w" sourceRef="StartEvent_1" targetRef="Activity_1im4jly" />
+    <bpmn:businessRuleTask id="Activity_1im4jly" camunda:resultVariable="insuranceCovered" camunda:decisionRef="Decision_1wfx9g8">
+      <bpmn:incoming>Flow_1596p0w</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zl6ipw</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_0zl6ipw" sourceRef="Activity_1im4jly" targetRef="Activity_1en58zh" />
+    <bpmn:endEvent id="Event_0fym16n">
+      <bpmn:incoming>Flow_197we87</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_197we87" sourceRef="Activity_1en58zh" targetRef="Event_0fym16n" />
+    <bpmn:scriptTask id="Activity_1en58zh" scriptFormat="js">
+      <bpmn:incoming>Flow_0zl6ipw</bpmn:incoming>
+      <bpmn:outgoing>Flow_197we87</bpmn:outgoing>
+      <bpmn:script>print(insuranceCovered)</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0rgw1nb">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ydyd08_di" bpmnElement="Activity_1im4jly">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0fym16n_di" bpmnElement="Event_0fym16n">
+        <dc:Bounds x="592" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13iltnu_di" bpmnElement="Activity_1en58zh">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1596p0w_di" bpmnElement="Flow_1596p0w">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zl6ipw_di" bpmnElement="Flow_0zl6ipw">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_197we87_di" bpmnElement="Flow_197we87">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="592" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

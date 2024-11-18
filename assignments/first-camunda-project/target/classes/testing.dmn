@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1jjfb6f" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <decision id="Decision_1wfx9g8" name="Decision 1" camunda:historyTimeToLive="7">
+    <decisionTable id="DecisionTable_02ayn87" hitPolicy="FIRST">
+      <input id="InputClause_0kcq8ys">
+        <inputExpression id="LiteralExpression_0xpzqc3" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0vcaogk" name="cost" typeRef="integer" />
+      <rule id="DecisionRule_0g9ggch">
+        <inputEntry id="UnaryTests_03khcz2">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1wvsvu9">
+          <text>value-(value*(objectAge/100))</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0m9sg4g">
+        <inputEntry id="UnaryTests_13qazsd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0eeb1ah">
+          <text>repair</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1303gwa">
+        <inputEntry id="UnaryTests_0l8t7fz">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0p4zjup">
+          <text>insuranceAmount</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_1wfx9g8">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_08xgptm" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <decision id="checkInsuranceCoverage" name="Check Insurance Plan" camunda:historyTimeToLive="7">
+    <decisionTable id="DecisionTable_1wf358s" hitPolicy="FIRST">
+      <input id="Input_1" label="Type of Insurance" camunda:inputVariable="cause">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1e05q1q">
+          <text>"Home Insurance","Auto Insurance","Business Insurance","Travel Insurance","Life Insurance","Health Insurance"</text>
+        </inputValues>
+      </input>
+      <output id="Output_1" name="insuranceCovered" typeRef="boolean" biodi:width="192" />
+      <rule id="DecisionRule_0fmepdj">
+        <inputEntry id="UnaryTests_1whav91">
+          <text>"Home Insurance"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1btcr0v">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0dkobji">
+        <inputEntry id="UnaryTests_0bmxwaj">
+          <text>"Auto Insurance"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1gukbod">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vcor2g">
+        <inputEntry id="UnaryTests_0q6a5y2">
+          <text>"Business Insurance"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1f2md20">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0p33mpd">
+        <inputEntry id="UnaryTests_0hwoewh">
+          <text>"Travel Insurance"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0akcy3n">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_177wrrg">
+        <inputEntry id="UnaryTests_0r2nir2">
+          <text>"Life Insurance"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0g8hagq">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0mdvsd2">
+        <inputEntry id="UnaryTests_0iibc45">
+          <text>"Health Insurance"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02h2qc1">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1rycj2o">
+        <inputEntry id="UnaryTests_1id023s">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1jpuil3">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="checkInsuranceCoverage">
+        <dc:Bounds height="80" width="180" x="160" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

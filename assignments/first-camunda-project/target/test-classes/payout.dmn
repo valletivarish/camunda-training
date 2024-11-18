@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_0qy4ki8" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <decision id="payout" name="Payout" camunda:historyTimeToLive="7">
+    <decisionTable id="DecisionTable_0qcncbv" hitPolicy="FIRST">
+      <input id="Input_1" label="Insurance Type" camunda:inputVariable="cause">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0wth294">
+          <text>"Home Insurance","Auto Insurance","Business Insurance","Travel Insurance","Life Insurance","Health Insurance"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1eb18xd" label="Claim Amount" camunda:inputVariable="claimAmount">
+        <inputExpression id="LiteralExpression_0sl3oe7" typeRef="long">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0i3kniu" label="Age of Object" camunda:inputVariable="ageOfObject">
+        <inputExpression id="LiteralExpression_0yexa3x" typeRef="long">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1uyes72" label="Repair Cost" camunda:inputVariable="repairCost">
+        <inputExpression id="LiteralExpression_1yo3ajk" typeRef="long">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Coverage Status" name="coverageStatus" typeRef="boolean" />
+      <output id="OutputClause_188c2b2" label="Deductible" name="deductible" typeRef="integer" />
+      <output id="OutputClause_0dsn3p5" label="Insured Value" name="insuredValue" typeRef="integer" />
+      <output id="OutputClause_0tm4qro" label="Depreciation Rate (%)" name="depreciationRate" typeRef="integer" />
+      <output id="OutputClause_13hd0wb" label="Additional Fees" name="additionalFees" typeRef="integer" />
+      <rule id="DecisionRule_1o0rdxe">
+        <description></description>
+        <inputEntry id="UnaryTests_0xwthkk">
+          <text>"Home Insurance"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vd0g89">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00ilhao">
+          <text>&lt;= 5</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0iuj7gh">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rqtn5j">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1w9p4ew">
+          <text>1000</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fulvt5">
+          <text>100000</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17k7bci">
+          <text>5</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06jdva6">
+          <text>200</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1fie6mw">
+        <inputEntry id="UnaryTests_0ooc4qe">
+          <text>"Home Insurance"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15c9s89">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02jwarc">
+          <text>&gt; 5</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1f84xwt">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11ghmdg">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1g8k5ru">
+          <text>1000</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dnkyzs">
+          <text>100000</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06svd09">
+          <text>10</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nw68v5">
+          <text>200</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18mvnml">
+        <inputEntry id="UnaryTests_0e10401">
+          <text>"Auto Insurance"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hmzc4n">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hdrg8h">
+          <text>&lt;= 3</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pdj0wo">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kcqs20">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p2479e">
+          <text>500</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rzhdxl">
+          <text>30000</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rxh6yp">
+          <text>5</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04hknrz">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1k5p6ko">
+        <inputEntry id="UnaryTests_0ty7uur">
+          <text>"Business Insurance"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bwbrwq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vtro0k">
+          <text>&gt; 5</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e01cmd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00o9lv5">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02j6l5b">
+          <text>2000</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0c3zz7p">
+          <text>500000</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xd7d7g">
+          <text>5</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_152g7no">
+          <text>500</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10jnuxj">
+        <inputEntry id="UnaryTests_1omvl3h">
+          <text>"Travel Insurance"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0x7ansi">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13qmcnt">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ptev1n">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cpspbu">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0vro87t">
+          <text>250</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0prccxy">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07zi2i5">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0p46fq9">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_12y0km5">
+        <inputEntry id="UnaryTests_1hxzrao">
+          <text>"Life Insurance"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ziqday">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12s5ey1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_145xxmq">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0oeourl">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fnp4v2">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0e4fkm5">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pretvm">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00s7th3">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1yub59c">
+        <inputEntry id="UnaryTests_1kwhzug">
+          <text>"Health Insurance"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0glsorz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wgacmd">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04up07a">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0db41na">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1u94wi1">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0x114kx">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nogwai">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0j49qsv">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0zzz1rk">
+        <inputEntry id="UnaryTests_18cgg6p">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0sl7rx9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_156zgoq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1m616hf">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1vq0wng">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vii45x">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18hj0dm">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_040eibv">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xjzvem">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="payout">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

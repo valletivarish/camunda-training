@@ -1,0 +1,53 @@
+{
+  "components": [
+    {
+      "label": "First Name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_088rtvu",
+        "columns": null
+      },
+      "id": "Field_1sixhni",
+      "key": "firstName"
+    },
+    {
+      "label": "Last Name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03q4umu",
+        "columns": null
+      },
+      "id": "Field_123lyfm",
+      "key": "lastName"
+    },
+    {
+      "label": "Email",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1kr8ocr",
+        "columns": null
+      },
+      "id": "Field_1ql8nv6",
+      "key": "email"
+    },
+    {
+      "label": "Phone Number",
+      "type": "number",
+      "layout": {
+        "row": "Row_03ma2c3",
+        "columns": null
+      },
+      "id": "Field_18bg2tf",
+      "key": "phoneNumber"
+    }
+  ],
+  "type": "default",
+  "id": "accountCreation",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.28.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 16
+}

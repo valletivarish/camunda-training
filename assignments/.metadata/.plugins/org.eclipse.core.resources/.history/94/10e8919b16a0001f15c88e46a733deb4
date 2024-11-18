@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20191111/MODEL/" 
+             xmlns:dmndi="http://www.omg.org/spec/DMN/20191111/DMNDI/" 
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" 
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" 
+             id="definitions" 
+             name="InsurancePayoutCalculation" 
+             namespace="http://example.com/dmn">
+
+  <decision id="calculatePayout" name="Calculate Payout">
+    <decisionTable id="decisionTable" hitPolicy="UNIQUE">
+      
+      <!-- Define Inputs -->
+      <input id="insuranceTypeInput" label="Insurance Type">
+        <inputExpression id="insuranceTypeExpression" typeRef="string">
+          <text>insuranceType</text>
+        </inputExpression>
+      </input>
+      <input id="coverageStatusInput" label="Coverage Status">
+        <inputExpression id="coverageStatusExpression" typeRef="boolean">
+          <text>coverageStatus</text>
+        </inputExpression>
+      </input>
+      <input id="claimAmountInput" label="Claim Amount">
+        <inputExpression id="claimAmountExpression" typeRef="number">
+          <text>claimAmount</text>
+        </inputExpression>
+      </input>
+      <input id="deductibleInput" label="Deductible">
+        <inputExpression id="deductibleExpression" typeRef="number">
+          <text>deductible</text>
+        </inputExpression>
+      </input>
+      <input id="insuredValueInput" label="Insured Value">
+        <inputExpression id="insuredValueExpression" typeRef="number">
+          <text>insuredValue</text>
+        </inputExpression>
+      </input>
+      <input id="repairCostInput" label="Repair Cost">
+        <inputExpression id="repairCostExpression" typeRef="number">
+          <text>repairCost</text>
+        </inputExpression>
+      </input>
+      <input id="ageOfObjectInput" label="Age of Object">
+        <inputExpression id="ageOfObjectExpression" typeRef="number">
+          <text>ageOfObject</text>
+        </inputExpression>
+      </input>
+      <input id="depreciationRateInput" label="Depreciation Rate">
+        <inputExpression id="depreciationRateExpression" typeRef="number">
+          <text>depreciationRate</text>
+        </inputExpression>
+      </input>
+      <input id="additionalFeesInput" label="Additional Fees">
+        <inputExpression id="additionalFeesExpression" typeRef="number">
+          <text>additionalFees</text>
+        </inputExpression>
+      </input>
+      
+      <!-- Define Outputs -->
+      <output id="basePayoutAmountOutput" label="Base Payout Amount" typeRef="number"/>
+      <output id="adjustedPayoutAmountOutput" label="Adjusted Payout Amount" typeRef="number"/>
+
+      <!-- Example Rule -->
+      <rule id="rule1">
+        <inputEntry id="insuranceTypeEntry1">
+          <text>"Home"</text>
+        </inputEntry>
+        <inputEntry id="coverageStatusEntry1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="claimAmountEntry1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="deductibleEntry1">
+          <text>1000</text>
+        </inputEntry>
+        <inputEntry id="insuredValueEntry1">
+          <text>100000</text>
+        </inputEntry>
+        <inputEntry id="repairCostEntry1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="ageOfObjectEntry1">
+          <text>&lt;= 5</text>
+        </inputEntry>
+        <inputEntry id="depreciationRateEntry1">
+          <text>5</text>
+        </inputEntry>
+        <inputEntry id="additionalFeesEntry1">
+          <text>200</text>
+        </inputEntry>
+        <outputEntry id="basePayoutAmountOutputEntry1">
+          <text>claimAmount - deductible</text>
+        </outputEntry>
+        <outputEntry id="adjustedPayoutAmountOutputEntry1">
+          <text>basePayout - (basePayout * depreciationRate / 100) - additionalFees</text>
+        </outputEntry>
+      </rule>
+      
+      <!-- Add additional rules as needed -->
+
+    </decisionTable>
+  </decision>
+</definitions>

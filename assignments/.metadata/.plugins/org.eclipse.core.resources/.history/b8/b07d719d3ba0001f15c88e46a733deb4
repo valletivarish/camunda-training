@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Claim Form</title>
+</head>
+<body>
+
+<div class="form-container">
+    <form role="form" name="form">
+        <div class="form-group">
+            <label for="insuranceType">Insurance Type</label>
+            <select id="insuranceType"
+                    cam-variable-name="insuranceType"
+                    cam-variable-type="String"
+                    onchange="toggleAgeOfObjectField()">
+                <option value="">Select Insurance Type</option>
+                <option value="Life Insurance">Life Insurance</option>
+                <option value="Home Insurance">Home Insurance</option>
+                <option value="Auto Insurance">Auto Insurance</option>
+                <option value="Health Insurance">Health Insurance</option>
+                <option value="Business Insurance">Business Insurance</option>
+                <option value="Travel Insurance">Travel Insurance</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="claimAmount">Claim Amount</label>
+            <input required
+                   id="claimAmount"
+                   cam-variable-name="claimAmount"
+                   cam-variable-type="Long"
+                   type="number"
+                   placeholder="Enter claim amount" />
+        </div>
+        <div class="form-group" id="ageOfObjectGroup" style="display: none;">
+            <label for="ageOfObject">Age of Object</label>
+            <input id="ageOfObject"
+                   cam-variable-name="ageOfObject"
+                   cam-variable-type="Long"
+                   type="number"
+                   placeholder="Enter age of object" />
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleAgeOfObjectField() {
+        const insuranceType = document.getElementById("insuranceType").value;
+        const ageOfObjectGroup = document.getElementById("ageOfObjectGroup");
+
+        // Check if selected insurance type is Home, Business, or Auto Insurance
+        if (insuranceType === "Home Insurance" || 
+            insuranceType === "Business Insurance" || 
+            insuranceType === "Auto Insurance") {
+            ageOfObjectGroup.style.display = "block";  // Show the Age of Object field
+        } else {
+            ageOfObjectGroup.style.display = "none";   // Hide the Age of Object field
+        }
+    }
+</script>
+
+</body>
+</html>

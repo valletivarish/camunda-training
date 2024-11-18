@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_0de6o5z" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <decision id="checkTheCause" name="Check the Cause" camunda:historyTimeToLive="7">
+    <decisionTable id="DecisionTable_1fjetuv" hitPolicy="FIRST">
+      <input id="Input_1" label="Insurance Covered" camunda:inputVariable="insuranceCovered">
+        <inputExpression id="InputExpression_1" typeRef="boolean">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_137e60i" label="Claim Amount" camunda:inputVariable="claimAmount">
+        <inputExpression id="LiteralExpression_1kg58ih" typeRef="long">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Cause Covered" name="causeCovered" typeRef="string" />
+      <rule id="DecisionRule_12bn5x4">
+        <inputEntry id="UnaryTests_0poco6r">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1u6pt1t">
+          <text>&gt;=10000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_000d64e">
+          <text>"maybe"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1s823cw">
+        <inputEntry id="UnaryTests_026vk9w">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0si208k">
+          <text>&lt;=10000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0wrzwml">
+          <text>"yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_12tkrzm">
+        <inputEntry id="UnaryTests_1rp2j90">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gr1rp4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1hs453c">
+          <text>"no"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vvv5il">
+        <inputEntry id="UnaryTests_18fp4eh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0y40ddv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00g5bny">
+          <text>"no"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="checkTheCause">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

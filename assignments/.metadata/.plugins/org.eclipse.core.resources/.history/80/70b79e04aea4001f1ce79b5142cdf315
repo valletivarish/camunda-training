@@ -1,0 +1,27 @@
+spring.application.name=10-bank-application
+
+spring.datasource.url=${DATASOURCE_URL}
+spring.datasource.username=${DATASOURCE_USER}
+spring.datasource.password=${DATASOURCE_PASSWORD}
+
+logging.level.org.hibernate.SQL=debug
+logging.level.org.hibernate.orm.jdbc.bind=trace
+
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto = update
+
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=tarunchintakunta@gmail.com
+spring.mail.password=osfk ednk tpka tcwy
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+spring.config.import=optional:classpath:.env
+
+
+
+app.jwt-secret=ee512f89c1669c3c023753babaacb68aed1da5ae849d5b6c79f72d47596bfd45
+app-jwt-expiration-milliseconds=604800000

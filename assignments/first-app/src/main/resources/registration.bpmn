@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1okss85" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <bpmn:process id="Registration" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_03zlkjg</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_03zlkjg" sourceRef="StartEvent_1" targetRef="enterDetails" />
+    <bpmn:userTask id="enterDetails" name="Enter Details">
+      <bpmn:incoming>Flow_03zlkjg</bpmn:incoming>
+      <bpmn:incoming>Flow_18vfvoh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1oc5qbt</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1oc5qbt" sourceRef="enterDetails" targetRef="Gateway_010v0w4" />
+    <bpmn:exclusiveGateway id="Gateway_010v0w4" name="Data Valid?">
+      <bpmn:incoming>Flow_1oc5qbt</bpmn:incoming>
+      <bpmn:outgoing>Flow_18vfvoh</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ljt9sf</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_18vfvoh" name="No" sourceRef="Gateway_010v0w4" targetRef="enterDetails">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${email == null || email.isEmpty() || password == null || password.isEmpty() || name == null || name.isEmpty()}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:scriptTask id="Activity_1mi9ad0" name="Account Already Exists" scriptFormat="javascript">
+      <bpmn:incoming>Flow_13yh17u</bpmn:incoming>
+      <bpmn:script>print('Account already exists with this email id');</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:exclusiveGateway id="Gateway_11uoatw" name="Already Exists">
+      <bpmn:incoming>Flow_0ljt9sf</bpmn:incoming>
+      <bpmn:outgoing>Flow_13yh17u</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1qo5fl7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0ljt9sf" name="Yes" sourceRef="Gateway_010v0w4" targetRef="Gateway_11uoatw">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${email != null &amp;&amp; !email.isEmpty() &amp;&amp; password != null &amp;&amp; !password.isEmpty() &amp;&amp; name != null &amp;&amp; !name.isEmpty()}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_13yh17u" name="Yes" sourceRef="Gateway_11uoatw" targetRef="Activity_1mi9ad0">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${email=='a@gamil.com'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1qo5fl7" name="No then send OTP" sourceRef="Gateway_11uoatw" targetRef="Activity_1peurju">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${email!='a@gamil.com'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Activity_1peurju" name="Provide OTP">
+      <bpmn:incoming>Flow_1qo5fl7</bpmn:incoming>
+      <bpmn:incoming>Flow_0jctk9l</bpmn:incoming>
+      <bpmn:outgoing>Flow_0pdhqz1</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1pnarhr" name="Correct OTP?">
+      <bpmn:incoming>Flow_0pdhqz1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tr6a0m</bpmn:outgoing>
+      <bpmn:outgoing>Flow_01geru2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0pdhqz1" sourceRef="Activity_1peurju" targetRef="Gateway_1pnarhr" />
+    <bpmn:sequenceFlow id="Flow_1tr6a0m" name="Yes" sourceRef="Gateway_1pnarhr" targetRef="Activity_1r92538">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${otp=='123'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:scriptTask id="Activity_1r92538" name="Account Registered" scriptFormat="javascript">
+      <bpmn:incoming>Flow_1tr6a0m</bpmn:incoming>
+      <bpmn:script>print('Account Registered');</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_01geru2" name="No" sourceRef="Gateway_1pnarhr" targetRef="Activity_0k6dvfp">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${otp!='123'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0jctk9l" sourceRef="Activity_0k6dvfp" targetRef="Activity_1peurju" />
+    <bpmn:scriptTask id="Activity_0k6dvfp" name="Account Not Registered Re-Enter OTP" scriptFormat="javascript">
+      <bpmn:incoming>Flow_01geru2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0jctk9l</bpmn:outgoing>
+      <bpmn:script>print('Account Not Registered Re-Enter OTP');</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Registration">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="109" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0r64ebv_di" bpmnElement="enterDetails">
+        <dc:Bounds x="270" y="87" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_010v0w4_di" bpmnElement="Gateway_010v0w4" isMarkerVisible="true">
+        <dc:Bounds x="465" y="102" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="461" y="78" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_11uoatw_di" bpmnElement="Gateway_11uoatw" isMarkerVisible="true">
+        <dc:Bounds x="635" y="102" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="625" y="78" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19o22wt_di" bpmnElement="Activity_1mi9ad0">
+        <dc:Bounds x="610" y="240" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0tx629l_di" bpmnElement="Activity_1peurju">
+        <dc:Bounds x="830" y="87" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1pnarhr_di" bpmnElement="Gateway_1pnarhr" isMarkerVisible="true">
+        <dc:Bounds x="1075" y="102" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1066" y="78" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_01gkpc0_di" bpmnElement="Activity_1r92538">
+        <dc:Bounds x="1270" y="87" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_119960v_di" bpmnElement="Activity_0k6dvfp">
+        <dc:Bounds x="1050" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_03zlkjg_di" bpmnElement="Flow_03zlkjg">
+        <di:waypoint x="215" y="127" />
+        <di:waypoint x="270" y="127" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18vfvoh_di" bpmnElement="Flow_18vfvoh">
+        <di:waypoint x="490" y="152" />
+        <di:waypoint x="490" y="310" />
+        <di:waypoint x="320" y="310" />
+        <di:waypoint x="320" y="167" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="398" y="292" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1oc5qbt_di" bpmnElement="Flow_1oc5qbt">
+        <di:waypoint x="370" y="127" />
+        <di:waypoint x="465" y="127" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ljt9sf_di" bpmnElement="Flow_0ljt9sf">
+        <di:waypoint x="515" y="127" />
+        <di:waypoint x="635" y="127" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="566" y="109" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13yh17u_di" bpmnElement="Flow_13yh17u">
+        <di:waypoint x="660" y="152" />
+        <di:waypoint x="660" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="666" y="193" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qo5fl7_di" bpmnElement="Flow_1qo5fl7">
+        <di:waypoint x="685" y="127" />
+        <di:waypoint x="830" y="127" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="725" y="96" width="66" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jctk9l_di" bpmnElement="Flow_0jctk9l">
+        <di:waypoint x="1050" y="290" />
+        <di:waypoint x="880" y="290" />
+        <di:waypoint x="880" y="167" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pdhqz1_di" bpmnElement="Flow_0pdhqz1">
+        <di:waypoint x="930" y="127" />
+        <di:waypoint x="1075" y="127" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tr6a0m_di" bpmnElement="Flow_1tr6a0m">
+        <di:waypoint x="1125" y="127" />
+        <di:waypoint x="1270" y="127" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1189" y="109" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01geru2_di" bpmnElement="Flow_01geru2">
+        <di:waypoint x="1100" y="152" />
+        <di:waypoint x="1100" y="250" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1087" y="211" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
